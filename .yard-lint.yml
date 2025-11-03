@@ -1,0 +1,37 @@
+# YARD Lint configuration
+# This project uses itself for documentation linting
+
+tags_order:
+  - param
+  - option
+  - yield
+  - yieldparam
+  - yieldreturn
+  - return
+  - raise
+  - see
+  - example
+  - note
+  - todo
+
+invalid_tags_names:
+  - param
+  - option
+  - return
+  - yieldreturn
+
+extra_types:
+  - []
+
+options:
+  - --private
+  - --protected
+
+exclude:
+  - '\.git'
+  - 'vendor/**/*'
+  - 'node_modules/**/*'
+  - 'spec/**/*'
+  - 'tmp/**/*'
+
+fail_on_severity: warning

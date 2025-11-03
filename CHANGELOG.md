@@ -1,0 +1,36 @@
+# Changelog
+
+## 0.1.0 (Unreleased)
+- [Feature] Initial release of YARD-Lint gem extracted from OffendingEngine
+- [Feature] Add comprehensive YARD documentation validation
+- [Feature] Add CLI tool (`yard-lint`) for running linter from command line
+- [Feature] Add support for detecting undocumented classes, modules, and methods
+- [Feature] Add support for detecting missing parameter documentation
+- [Feature] Add support for validating tag type definitions
+- [Feature] Add support for enforcing tag ordering conventions
+- [Feature] Add support for validating boolean method documentation
+- [Feature] Add YARD warning detection (unknown tags, invalid directives, etc.)
+- [Feature] Add JSON and text output formats
+- [Feature] Add configurable tag ordering
+- [Feature] Add configurable extra type definitions
+- [Feature] Add configurable YARD options
+- [Feature] Add Ruby API for programmatic usage
+- [Feature] Add Result object with offense categorization
+- [Feature] Add three severity levels: error, warning, convention
+- [Feature] Add YAML configuration file support (`.yard-lint.yml`)
+- [Feature] Add automatic configuration file discovery in parent directories
+- [Feature] Add file exclusion patterns with glob support
+- [Feature] Add configurable exit code based on severity level (`fail_on_severity`)
+- [Feature] Add quiet mode (`--quiet`) for minimal output
+- [Feature] Add statistics summary (`--stats`) showing offense counts by severity
+- [Feature] Add Rake task integration (`Yard::Lint::RakeTask`)
+- [Feature] Add GitHub Actions CI workflow with multi-Ruby testing
+- [Feature] Add GitHub Actions automated gem publishing workflow
+- [Enhancement] Add comprehensive RSpec test suite
+- [Enhancement] Add YARD documentation to all public APIs
+- [Enhancement] Configure self-linting to ensure documentation quality
+- [Feature] Add @api tag validation with `require_api_tags` and `allowed_apis` configuration
+- [Feature] Add @abstract method validation with `validate_abstract_methods` configuration
+- [Feature] Add @option hash documentation validation with `validate_option_tags` configuration
+- [Enhancement] Replace manual requires with Zeitwerk for automatic code loading
+- [Enhancement] Enable `validate_abstract_methods` and `validate_option_tags` by default for better DX
