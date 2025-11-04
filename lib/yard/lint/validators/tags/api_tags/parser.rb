@@ -7,8 +7,8 @@ module Yard
         module ApiTags
           # Parser for @api tag validation results
           class Parser < Parsers::Base
-          # @param yard_output [String] raw yard output with API tag issues
-          # @return [Array<Hash>] array with API tag violation details
+            # @param yard_output [String] raw yard output with API tag issues
+            # @return [Array<Hash>] array with API tag violation details
             def call(yard_output)
               return [] if yard_output.nil? || yard_output.empty?
 

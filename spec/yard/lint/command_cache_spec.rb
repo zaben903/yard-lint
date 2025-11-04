@@ -27,8 +27,8 @@ RSpec.describe Yard::Lint::CommandCache do
     end
 
     it 'handles commands with whitespace differences as identical' do
-      result1 = cache.execute('echo    "test"')
-      result2 = cache.execute('echo "test"')
+      cache.execute('echo    "test"')
+      cache.execute('echo "test"')
 
       # Both should use the cached result
       stats = cache.stats
@@ -85,9 +85,9 @@ RSpec.describe Yard::Lint::CommandCache do
 
   describe 'command normalization' do
     it 'treats commands with different whitespace as identical' do
-      result1 = cache.execute("echo   'test'  ")
-      result2 = cache.execute("echo 'test'")
-      result3 = cache.execute("echo    'test'")
+      cache.execute("echo   'test'  ")
+      cache.execute("echo 'test'")
+      cache.execute("echo    'test'")
 
       stats = cache.stats
       expect(stats[:hits]).to eq(2)  # Second and third are hits
@@ -95,8 +95,8 @@ RSpec.describe Yard::Lint::CommandCache do
     end
 
     it 'treats commands with newlines as identical to single-line' do
-      result1 = cache.execute("echo \n 'test'")
-      result2 = cache.execute("echo 'test'")
+      cache.execute("echo \n 'test'")
+      cache.execute("echo 'test'")
 
       stats = cache.stats
       expect(stats[:hits]).to eq(1)

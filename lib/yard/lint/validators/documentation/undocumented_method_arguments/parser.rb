@@ -6,14 +6,14 @@ module Yard
       module Documentation
         module UndocumentedMethodArguments
           # Class used to extract details about methods with undocumented arguments
-        # @example
-        #   Platform::Analysis::Authors#initialize
+          # @example
+          #   Platform::Analysis::Authors#initialize
           class Parser < Parsers::Base
-          # Regex to extract location and method name from yard list output
+            # Regex to extract location and method name from yard list output
             LOCATION_REGEX = /^(.+)#(.+)$|^(.+)\.(.+)$/
 
-          # @param yard_list [String] raw yard list results string
-          # @return [Array<Hash>] Array with undocumented method arguments details
+            # @param yard_list [String] raw yard list results string
+            # @return [Array<Hash>] Array with undocumented method arguments details
             def call(yard_list)
               yard_list
                 .split("\n")

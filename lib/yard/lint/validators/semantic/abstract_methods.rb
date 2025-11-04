@@ -4,7 +4,7 @@ module Yard
   module Lint
     module Validators
       module Semantic
-      # AbstractMethods validator module
+        # AbstractMethods validator module
         module AbstractMethods
           class << self
             # Unique identifier for this validator

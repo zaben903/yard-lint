@@ -4,7 +4,7 @@ module Yard
   module Lint
     module Validators
       module Tags
-      # ApiTags validator module
+        # ApiTags validator module
         module ApiTags
           class << self
             # Unique identifier for this validator

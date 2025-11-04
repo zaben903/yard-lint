@@ -7,7 +7,7 @@ class DataService
   # @param data [Array] input data
   # @raise [ArgumentError] if data is invalid
   def process(data)
-    raise ArgumentError, "Invalid data" if data.nil?
+    raise ArgumentError, 'Invalid data' if data.nil?
     { result: data.map(&:upcase) }
   end
 
@@ -16,7 +16,7 @@ class DataService
   # @raise [StandardError] if input is invalid
   # @return [Boolean] validation result
   def validate(input)
-    raise StandardError, "Empty input" if input.empty?
+    raise StandardError, 'Empty input' if input.empty?
     true
   end
 end

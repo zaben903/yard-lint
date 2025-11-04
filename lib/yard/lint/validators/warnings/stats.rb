@@ -4,7 +4,7 @@ module Yard
   module Lint
     module Validators
       module Warnings
-      # Stats validator module
+        # Stats validator module
         module Stats
           class << self
             # Unique identifier for this validator

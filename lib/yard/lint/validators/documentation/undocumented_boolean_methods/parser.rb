@@ -7,14 +7,14 @@ module Yard
       module Documentation
         module UndocumentedBooleanMethods
           # Class used to extract details about undocumented boolean methods
-        # @example
-        #   Platform::Analysis::Authors#valid?
+          # @example
+          #   Platform::Analysis::Authors#valid?
           class Parser < Parsers::Base
-          # Regex to extract location and method name from yard list output
+            # Regex to extract location and method name from yard list output
             LOCATION_REGEX = /^(.+)#(.+)$|^(.+)\.(.+)$/
 
-          # @param yard_list [String] raw yard list results string
-          # @return [Array<Hash>] Array with undocumented boolean methods details
+            # @param yard_list [String] raw yard list results string
+            # @return [Array<Hash>] Array with undocumented boolean methods details
             def call(yard_list)
               yard_list
                 .split("\n")

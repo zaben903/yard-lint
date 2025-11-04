@@ -7,8 +7,8 @@ module Yard
         module AbstractMethods
           # Parser for @abstract method validation results
           class Parser < Parsers::Base
-          # @param yard_output [String] raw yard output with abstract method issues
-          # @return [Array<Hash>] array with abstract method violation details
+            # @param yard_output [String] raw yard output with abstract method issues
+            # @return [Array<Hash>] array with abstract method violation details
             def call(yard_output)
               return [] if yard_output.nil? || yard_output.empty?
 

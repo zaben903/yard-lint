@@ -4,7 +4,7 @@ module Yard
   module Lint
     module Validators
       module Tags
-      # OptionTags validator module
+        # OptionTags validator module
         module OptionTags
           class << self
             # Unique identifier for this validator

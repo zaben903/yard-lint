@@ -7,8 +7,8 @@ module Yard
         module OptionTags
           # Parser for @option tag validation results
           class Parser < Parsers::Base
-          # @param yard_output [String] raw yard output with option tag issues
-          # @return [Array<Hash>] array with option tag violation details
+            # @param yard_output [String] raw yard output with option tag issues
+            # @return [Array<Hash>] array with option tag violation details
             def call(yard_output)
               return [] if yard_output.nil? || yard_output.empty?
 

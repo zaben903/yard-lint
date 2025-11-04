@@ -4,18 +4,18 @@
 # This class provides basic math operations
 class CleanCalculator
   # Adds two numbers together
-  # @param x [Integer] first number
-  # @param y [Integer] second number
-  # @return [Integer] the sum of x and y
-  def add(x, y)
-    x + y
+  # @param first [Integer] first number
+  # @param second [Integer] second number
+  # @return [Integer] the sum of first and second
+  def add(first, second)
+    first + second
   end
 
   # Multiplies two numbers
-  # @param x [Integer] first number
-  # @param y [Integer] second number
-  # @return [Integer] the product of x and y
-  def multiply(x, y)
-    x * y
+  # @param first [Integer] first number
+  # @param second [Integer] second number
+  # @return [Integer] the product of first and second
+  def multiply(first, second)
+    first * second
   end
 end

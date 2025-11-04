@@ -4,7 +4,7 @@ module Yard
   module Lint
     module Validators
       module Documentation
-      # UndocumentedBooleanMethods validator module
+        # UndocumentedBooleanMethods validator module
         module UndocumentedBooleanMethods
           class << self
             # Unique identifier for this validator

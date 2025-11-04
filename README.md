@@ -412,18 +412,6 @@ bundle exec rspec spec/yard/lint/config_spec.rb
 
 The test suite includes comprehensive unit tests and integration tests for all validators. Tests use intelligent caching to share YARD databases across tests for optimal performance.
 
-### Installing Locally
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes in each version.
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/mensfeld/yard-lint.
-
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

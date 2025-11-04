@@ -16,7 +16,7 @@ module Yard
           #   and :tags_order key with expected tags order
           # @return [Array<Hash>] hashes with details about objects with docs with invalid tags
           #   order.
-            def call(yard_list)
+          def call(yard_list)
               # Return empty array if yard_list is nil or empty
               return [] if yard_list.nil? || yard_list.empty?
               return [] if yard_list[:result].nil? || yard_list[:result].empty?
@@ -49,9 +49,9 @@ module Yard
 
           private
 
-          # @param location_line [String] full line with the location. It can be used, when we
-          #   use module_function or other aliases that alter the yard tags order
-          # @return [String] line without special characters
+            # @param location_line [String] full line with the location. It can be used, when we
+            #   use module_function or other aliases that alter the yard tags order
+            # @return [String] line without special characters
             def normalize(location_line)
               location_line
                 .scan(NORMALIZATION_REGEXP)

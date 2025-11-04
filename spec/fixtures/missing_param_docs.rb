@@ -4,8 +4,8 @@
 class Calculator
   # Calculates the sum - missing @param docs
   # @return [Integer] the sum
-  def calculate(x, y)
-    x + y
+  def calculate(first, second)
+    first + second
   end
 
   # Greets a person - missing @param docs

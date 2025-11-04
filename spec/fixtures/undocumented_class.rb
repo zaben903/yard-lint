@@ -3,7 +3,7 @@
 # This class has no documentation
 class UndocumentedClass
   def some_method
-    "hello"
+    'hello'
   end
 end
 
