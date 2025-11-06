@@ -1,6 +1,6 @@
 # YARD-Lint
 
-A comprehensive linter for YARD documentation that helps you maintain clean, consistent, and complete documentation in your Ruby projects.
+A comprehensive linter for YARD documentation that helps you maintain clean, consistent, and complete documentation in your Ruby and Ruby on Rails projects.
 
 ## Features
 
@@ -237,6 +237,33 @@ Tags/ApiTags:
   Exclude:
     - 'spec/**/*'  # Only exclude specs
 ```
+
+**Example: Enforce tag order on private methods but allow them to be undocumented**
+
+```yaml
+AllValidators:
+  # Include private methods in YARD parsing
+  YardOptions:
+    - --private
+
+# Don't require documentation on private methods
+Documentation/UndocumentedObjects:
+  Enabled: true
+  Exclude:
+    - 'lib/**/*'  # Exclude all lib files (or use more specific patterns)
+
+Documentation/UndocumentedMethodArguments:
+  Enabled: true
+  Exclude:
+    - 'lib/**/*'
+
+# But DO enforce correct tag order if private methods have docs
+Tags/Order:
+  Enabled: true
+  Exclude: []  # No exclusions - check all methods
+```
+
+This configuration allows private methods to remain undocumented, but if you do document them, the tags must be in the correct order.
 
 **How it works:**
 
