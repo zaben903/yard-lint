@@ -4,13 +4,13 @@ module Yard
   module Lint
     module Validators
       module Warnings
-        module Stats
-          # Configuration for Stats validator
+        module DuplicatedParameterName
+          # Configuration for DuplicatedParameterName validator
           class Config < ::Yard::Lint::Validators::Config
-            self.id = :stats
+            self.id = :duplicated_parameter_name
             self.defaults = {
               'Enabled' => true,
-              'Severity' => 'warning'
+              'Severity' => 'error'
             }.freeze
           end
         end

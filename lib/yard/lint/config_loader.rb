@@ -81,12 +81,8 @@ module Yard
         end
       end
 
-      # Validator departments and their validators
-      # Auto-discovered from codebase structure
-      DEPARTMENTS = discover_validators.freeze
-
-      # All validator names (derived from departments)
-      ALL_VALIDATORS = DEPARTMENTS.values.flatten.freeze
+      # All validator names (auto-discovered from codebase structure)
+      ALL_VALIDATORS = discover_validators.values.flatten.freeze
 
       # Default configuration for each validator
       DEFAULT_VALIDATOR_CONFIG = {

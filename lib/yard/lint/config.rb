@@ -74,6 +74,15 @@ module Yard
         all_validators['YardOptions'] || []
       end
 
+      # Get YARD options for a specific validator
+      # Falls back to global options if validator doesn't specify its own
+      # @param validator_name [String] full validator name
+      # @return [Array<String>] YARD options for this validator
+      def validator_yard_options(validator_name)
+        validator_config = validators[validator_name] || {}
+        validator_config['YardOptions'] || options
+      end
+
       # Global file exclusion patterns
       # @return [Array<String>] exclusion patterns
       def exclude
@@ -99,7 +108,7 @@ module Yard
       # @return [String] severity level for this validator
       def validator_severity(validator_name)
         validator_config = validators[validator_name] || {}
-        validator_config['Severity'] || department_severity(validator_name)
+        validator_config['Severity'] || 'warning'
       end
 
       # Get validator-specific exclude patterns
@@ -108,6 +117,14 @@ module Yard
       def validator_exclude(validator_name)
         validator_config = validators[validator_name] || {}
         validator_config['Exclude'] || []
+      end
+
+      # Combined global and per-validator exclusions
+      # Returns all exclusion patterns that apply to this validator
+      # @param validator_name [String] full validator name
+      # @return [Array<String>] combined exclusion patterns (global + per-validator)
+      def validator_all_excludes(validator_name)
+        exclude + validator_exclude(validator_name)
       end
 
       # Get validator-specific configuration value
@@ -187,21 +204,6 @@ module Yard
           config[validator_name] = build_default_validator_config(validator_name)
         end
 
-        # Apply department-level overrides
-        ConfigLoader::DEPARTMENTS.each do |department, validator_names|
-          next unless @raw_config[department]
-
-          department_config = @raw_config[department]
-          validator_names.each do |validator_name|
-            next unless department_config.is_a?(Hash)
-
-            config[validator_name] = merge_validator_config(
-              config[validator_name],
-              department_config
-            )
-          end
-        end
-
         # Apply validator-specific overrides
         @raw_config.each do |key, value|
           next unless key.include?('/') # Validator-specific config
@@ -217,29 +219,13 @@ module Yard
       # @param validator_name [String] full validator name
       # @return [Hash] default configuration
       def build_default_validator_config(validator_name)
-        # Try to get defaults from validator config first, otherwise use empty hash
-        # Validators without configs will get their defaults from
-        # DEFAULT_VALIDATOR_CONFIG and department_severity
+        # Get defaults from validator config
         validator_cfg = ConfigLoader.validator_config(validator_name)
         defaults = validator_cfg&.defaults || {}
         base = ConfigLoader::DEFAULT_VALIDATOR_CONFIG.dup
 
-        base.merge(defaults).tap do |config|
-          # Set department default severity if not specified
-          config['Severity'] ||= department_severity(validator_name)
-        end
-      end
-
-      # Get department severity for a validator
-      # Used as fallback for validators without explicit severity in their module defaults
-      # @param validator_name [String] full validator name
-      # @return [String] severity level
-      def department_severity(validator_name)
-        department = validator_name.split('/').first
-
-        # Special case: Warnings department uses 'error' severity
-        # All other departments (Documentation, Tags, Semantic) default to 'warning'
-        department == 'Warnings' ? 'error' : 'warning'
+        # Merge validator-specific defaults with base config
+        base.merge(defaults)
       end
 
       # Merge validator configuration

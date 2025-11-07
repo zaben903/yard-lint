@@ -92,7 +92,15 @@ module Yard
 
         # @return [String] all arguments with which yard stats should be executed
         def shell_arguments
-          args = escape(config.options).join(' ')
+          validator_name = self.class.name.split('::').then do |parts|
+            idx = parts.index('Validators')
+            next config.options unless idx && parts[idx + 1] && parts[idx + 2]
+
+            "#{parts[idx + 1]}/#{parts[idx + 2]}"
+          end
+
+          yard_options = config.validator_yard_options(validator_name)
+          args = escape(yard_options).join(' ')
           "#{args} #{DEFAULT_OPTIONS.join(' ')}"
         end
 

@@ -4,14 +4,12 @@ module Yard
   module Lint
     module Validators
       module Warnings
-        module Stats
-          # Class used to extract warnings details that are related to yard unknown tags
-          # @example
-          #   [warn]: Unknown tag @example1 in file `/builds/path/engine.rb` near line 32
-          class UnknownTag < ::Yard::Lint::Parsers::OneLineBase
+        module UnknownDirective
+          # Parser for UnknownDirective warnings
+          class Parser < ::Yard::Lint::Parsers::OneLineBase
             # Set of regexps for detecting warnings reported by yard stats
             self.regexps = {
-              general: /^\[warn\]: Unknown tag.*@.*near line/,
+              general: /^\[warn\]: Unknown directive.*@!.*near line/,
               message: /\[warn\]: (.*) in file/,
               location: /in file `(.*)`/,
               line: /line (\d*)/

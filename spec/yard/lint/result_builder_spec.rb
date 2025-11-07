@@ -81,30 +81,28 @@ RSpec.describe Yard::Lint::ResultBuilder do
       end
     end
 
-    context 'with multi-parser validator (Warnings/Stats)' do
-      let(:validator_name) { 'Warnings/Stats' }
+    context 'with validator (Warnings/UnknownTag)' do
+      let(:validator_name) { 'Warnings/UnknownTag' }
       let(:raw_results) do
         {
-          stats: {
-            stdout: "[warn]: Unknown tag @example1 in file `file.rb` near line 5\n" \
-                    "[warn]: @param tag has unknown parameter name: wrong_name for method " \
-                    "'Foo#bar' in file `file.rb` near line 10\n",
+          unknown_tag: {
+            stdout: "[warn]: Unknown tag @example1 in file `file.rb` near line 5\n",
             stderr: '',
             exit_code: 0
           }
         }
       end
 
-      it 'discovers and uses multiple parsers' do
+      it 'discovers and uses parser' do
         result = builder.build(validator_name, raw_results)
 
         expect(result).to be_a(Yard::Lint::Results::Base)
-        # Should have parsed offenses from multiple parser classes
-        expect(result.offenses.size).to be >= 2
+        # Should have parsed offenses
+        expect(result.offenses.size).to be >= 1
       end
 
       it 'returns nil when no warnings' do
-        empty_results = { stats: { stdout: '', stderr: '', exit_code: 0 } }
+        empty_results = { unknown_tag: { stdout: '', stderr: '', exit_code: 0 } }
         result = builder.build(validator_name, empty_results)
 
         expect(result).to be_nil
@@ -128,21 +126,21 @@ RSpec.describe Yard::Lint::ResultBuilder do
   end
 
   describe 'parser discovery' do
-    it 'discovers multiple parsers for Stats validator' do
+    it 'discovers parser for UnknownTag validator' do
       result = builder.build(
-        'Warnings/Stats',
+        'Warnings/UnknownTag',
         {
-          stats: {
-            stdout: "[warn]: Unknown tag @test in file `file.rb` near line 5\n" \
-                    "[warn]: Unknown directive @!test in file `file.rb` near line 10\n",
+          unknown_tag: {
+            stdout: "[warn]: Unknown tag @test in file `file.rb` near line 5\n",
             stderr: '',
             exit_code: 0
           }
         }
       )
 
-      # Multiple parsers discovered and used
+      # Parser discovered and used
       expect(result).to be_a(Yard::Lint::Results::Base)
+      expect(result.offenses.size).to be >= 1
     end
   end
 

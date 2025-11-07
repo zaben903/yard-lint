@@ -4,8 +4,8 @@ module Yard
   module Lint
     module Validators
       module Warnings
-        module Stats
-          # Runs yard stats to check the docs and reuse warnings and errors
+        module UnknownDirective
+          # Runs yard stats to check for unknowndirective
           class Validator < Base
             private
 

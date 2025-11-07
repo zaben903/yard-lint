@@ -97,6 +97,38 @@ RSpec.describe 'Per-validator file exclusions', :integration, type: :feature do
       undoc_arg_offenses = result.offenses.select { |o| o[:name] == 'UndocumentedMethodArgument' }
       expect(undoc_arg_offenses).to be_empty
     end
+
+    it 'merges global exclusions with per-validator exclusions' do
+      files = [
+        File.join(fixtures_dir, 'private_methods.rb'),
+        File.join(fixtures_dir, 'protected_methods.rb')
+      ]
+
+      # Global exclusion applies to all validators
+      # Per-validator exclusions add to global exclusions
+      config = Yard::Lint::Config.new(
+        {
+          'AllValidators' => {
+            'Exclude' => ['**/private_methods.rb']
+          },
+          'Documentation/UndocumentedMethodArguments' => {
+            'Enabled' => true,
+            'Exclude' => ['**/protected_methods.rb']
+          }
+        }
+      )
+
+      runner = Yard::Lint::Runner.new(files, config)
+      result = runner.run
+
+      # UndocumentedMethodArguments should exclude both files
+      undoc_arg_offenses = result.offenses.select { |o| o[:name] == 'UndocumentedMethodArgument' }
+      undoc_arg_files = undoc_arg_offenses.filter_map { |o| o[:file] }
+
+      # Should not process either file for UndocumentedMethodArguments
+      expect(undoc_arg_files.none? { |f| f.include?('private_methods.rb') }).to be true
+      expect(undoc_arg_files.none? { |f| f.include?('protected_methods.rb') }).to be true
+    end
   end
 
   describe 'per-validator exclusions do not affect other validators' do
