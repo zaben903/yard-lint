@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 (Unreleased)
+## 0.2.0 (2025-11-07)
 
 - Initial release of YARD-Lint gem
 - Comprehensive YARD documentation validation
@@ -26,4 +26,3 @@
 - @abstract method validation
 - @option hash documentation validation
 - Zeitwerk for automatic code loading
-- Comprehensive RSpec test suite (222 examples, 94.48% coverage)
