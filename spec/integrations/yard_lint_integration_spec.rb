@@ -326,8 +326,10 @@ RSpec.describe 'Yard::Lint Integration Tests' do
         expect(offense).to have_key(:location_line)
 
         # Values should be valid
-        expect(%w[error warning convention]).to include(offense[:severity])
-        expect(%w[line method]).to include(offense[:type])
+        valid_severities = %w[error warning convention]
+        valid_types = %w[line method]
+        expect(valid_severities).to include(offense[:severity])
+        expect(valid_types).to include(offense[:type])
         expect(offense[:message]).to be_a(String)
         expect(offense[:message]).not_to be_empty
         expect(offense[:location]).to include('.rb')

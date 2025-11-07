@@ -36,10 +36,13 @@ RSpec.describe Yard::Lint::Runner do
     end
 
     it 'orchestrates the validation process' do
-      expect(runner).to receive(:run_validators).and_call_original
-      expect(runner).to receive(:parse_results).and_call_original
-      expect(runner).to receive(:build_result).and_call_original
+      allow(runner).to receive(:run_validators).and_call_original
+      allow(runner).to receive(:parse_results).and_call_original
+      allow(runner).to receive(:build_result).and_call_original
       runner.run
+      expect(runner).to have_received(:run_validators)
+      expect(runner).to have_received(:parse_results)
+      expect(runner).to have_received(:build_result)
     end
   end
 
