@@ -2,6 +2,14 @@
 
 A comprehensive linter for YARD documentation that helps you maintain clean, consistent, and complete documentation in your Ruby and Ruby on Rails projects.
 
+## Why Documentation Quality Matters More Than Ever
+
+Accurate documentation isn't just for human developers anymore. [Research shows](https://arxiv.org/html/2404.03114) that incorrect documentation reduces AI assistant success rates up to 50% (from 44.7% to 22.1%). [Enterprise studies](https://arxiv.org/html/2501.13282v1) with 400+ developers found well-documented code achieves 30%+ AI acceptance rates versus 14-20% for poorly documented code.
+
+**The problem:** Documentation drifts as code changes-parameters get renamed, return types change, but docs stay stale. This doesn't just confuse developers; it trains AI coding assistants to generate confidently wrong code.
+
+**The solution:** YARD-Lint automatically validates your YARD documentation stays synchronized with your code, ensuring both human developers and AI tools have accurate context.
+
 ## Features
 
 YARD-Lint validates your YARD documentation for:
@@ -54,12 +62,6 @@ yard-lint --config config/yard-lint.yml lib/
 
 # Output as JSON
 yard-lint --format json lib/ > report.json
-
-# Quiet mode (only show summary)
-yard-lint --quiet lib/
-
-# Show statistics
-yard-lint --stats lib/
 ```
 
 ## Configuration
@@ -359,35 +361,6 @@ Options:
 
 All configuration (tag order, exclude patterns, severity levels, validator settings) should be defined in `.yard-lint.yml`.
 
-### Progress Indicator
-
-YARD-Lint displays a real-time progress indicator showing which validator is currently running:
-
-```
-[3/9] Documentation/UndocumentedObjects
-```
-
-The progress indicator:
-- **Auto-enabled** when output is to a terminal (TTY)
-- **Auto-disabled** when piping output to a file or another command
-- Can be explicitly controlled with `--progress` or `--no-progress`
-
-Examples:
-
-```bash
-# Progress shown automatically in terminal
-yard-lint lib/
-
-# Progress hidden when piping
-yard-lint lib/ > report.txt
-
-# Explicitly disable progress
-yard-lint --no-progress lib/
-
-# Explicitly enable progress
-yard-lint --progress lib/
-```
-
 ## Examples
 
 ### Check a directory
@@ -400,18 +373,6 @@ yard-lint lib/
 
 ```bash
 yard-lint lib/my_class.rb
-```
-
-### Quiet mode with statistics
-
-```bash
-yard-lint --quiet --stats lib/
-```
-
-### JSON output
-
-```bash
-yard-lint --format json lib/ > report.json
 ```
 
 ### Use custom config file
@@ -461,32 +422,6 @@ class AnotherClass
 end
 ```
 
-### @abstract method validation (enabled by default)
-
-This validator ensures abstract methods don't have real implementations. It's **enabled by default**. To disable it, add to `.yard-lint.yml`:
-
-```yaml
-Semantic/AbstractMethods:
-  Enabled: false
-```
-
-Examples:
-
-```ruby
-# Good
-# @abstract
-def process
-  raise NotImplementedError
-end
-
-# Bad - @abstract method has implementation
-# @abstract
-def process
-  puts "This shouldn't be here"
-  do_something
-end
-```
-
 ### @option tag validation (enabled by default)
 
 This validator ensures that methods with options parameters document them. It's **enabled by default**. To disable it, add to `.yard-lint.yml`:
@@ -513,30 +448,6 @@ end
 def configure(name, options = {})
 end
 ```
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-### Running Tests
-
-```bash
-# Run all tests (529 examples, ~1 minute)
-bundle exec rspec
-
-# Run with profiling to see slowest tests
-bundle exec rspec --profile 10
-
-# Run only integration tests
-bundle exec rspec spec/integration/
-
-# Run a specific test file
-bundle exec rspec spec/yard/lint/config_spec.rb
-```
-
-The test suite includes comprehensive unit tests and integration tests for all validators. Tests use intelligent caching to share YARD databases across tests for optimal performance.
-
-**Test Coverage**: 95.04% (1227/1291 lines)
 
 ## License
 
