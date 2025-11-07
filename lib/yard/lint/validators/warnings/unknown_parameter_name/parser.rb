@@ -7,7 +7,7 @@ module Yard
         module UnknownParameterName
           # Parser for UnknownParameterName warnings
           class Parser < ::Yard::Lint::Parsers::TwoLineBase
-            # Set of regexps for detecting warnings reported by yard stats
+            # Set of regexps for detecting warnings reported by YARD stats
             self.regexps = {
               general: /^\[warn\]: @param tag has unknown parameter name/,
               message: /\[warn\]: (.*)$/,

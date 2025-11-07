@@ -7,7 +7,7 @@ module Yard
         module UnknownDirective
           # Parser for UnknownDirective warnings
           class Parser < ::Yard::Lint::Parsers::OneLineBase
-            # Set of regexps for detecting warnings reported by yard stats
+            # Set of regexps for detecting warnings reported by YARD stats
             self.regexps = {
               general: /^\[warn\]: Unknown directive.*@!.*near line/,
               message: /\[warn\]: (.*) in file/,

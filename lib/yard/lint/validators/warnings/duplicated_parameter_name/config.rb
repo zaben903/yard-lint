@@ -3,7 +3,9 @@
 module Yard
   module Lint
     module Validators
+      # Validators for checking YARD warnings
       module Warnings
+        # Validator for detecting duplicated parameter names in @param tags
         module DuplicatedParameterName
           # Configuration for DuplicatedParameterName validator
           class Config < ::Yard::Lint::Validators::Config

@@ -10,15 +10,15 @@ module Yard
         # Must be stored on Base itself, not on subclasses
         @shared_command_cache = nil
 
-        # Default yard stats options that we need to use
+        # Default YARD command options that we need to use
         DEFAULT_OPTIONS = [
           '--charset utf-8',
           '--markup markdown',
           '--no-progress'
         ].freeze
 
-        # String with a temp dir to store the yard stats database
-        # @note We run yard multiple times and in order not to rebuild db over and over
+        # String with a temp dir to store the YARD database
+        # @note We run YARD multiple times and in order not to rebuild db over and over
         #   again but reuse the same one, we have a single tmp dir for it
         YARDOC_TEMP_DIR = Dir.mktmpdir.freeze
 
@@ -27,23 +27,6 @@ module Yard
         attr_reader :config, :selection
 
         class << self
-          # Unique identifier for this validator
-          # @return [Symbol] validator identifier
-          attr_accessor :id
-
-          # Default configuration for this validator
-          # @return [Hash] default configuration hash
-          attr_accessor :defaults
-
-          # Validators to combine with this one
-          # @return [Array<String>] validator names to combine, empty array if standalone
-          def combines_with
-            @combines_with ||= []
-          end
-
-          # Set validators to combine with
-          attr_writer :combines_with
-
           # Lazy-initialized command cache shared across all validator instances
           # This allows different validators to reuse results from identical YARD commands
           # @return [CommandCache] the command cache instance
@@ -90,7 +73,7 @@ module Yard
 
         private
 
-        # @return [String] all arguments with which yard stats should be executed
+        # @return [String] all arguments with which YARD command should be executed
         def shell_arguments
           validator_name = self.class.name.split('::').then do |parts|
             idx = parts.index('Validators')

@@ -9,7 +9,7 @@ module Yard
           # @example
           #   [warn]: Unknown tag @example1 in file `/builds/path/engine.rb` near line 32
           class Parser < ::Yard::Lint::Parsers::OneLineBase
-            # Set of regexps for detecting warnings reported by yard stats
+            # Set of regexps for detecting warnings reported by YARD stats
             self.regexps = {
               general: /^\[warn\]: Unknown tag.*@.*near line/,
               message: /\[warn\]: (.*) in file/,

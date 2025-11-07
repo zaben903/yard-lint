@@ -135,7 +135,7 @@ module Yard
         validators.dig(validator_name, key)
       end
 
-      # Setter methods for backward compatibility and programmatic configuration
+      # Setter methods for programmatic configuration
 
       # Set YARD options
       # @param value [Array<String>] YARD options

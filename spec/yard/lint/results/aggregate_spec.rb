@@ -109,17 +109,17 @@ RSpec.describe Yard::Lint::Results::Aggregate do
     it 'counts offenses by severity' do
       stats = aggregate.statistics
       expect(stats).to be_a(Hash)
-      expect(stats['error']).to eq(1)
-      expect(stats['warning']).to eq(1)
-      expect(stats['convention']).to eq(1)
+      expect(stats[:error]).to eq(1)
+      expect(stats[:warning]).to eq(1)
+      expect(stats[:convention]).to eq(1)
     end
 
     it 'initializes all severity counts to 0' do
       empty_aggregate = described_class.new([], config)
       stats = empty_aggregate.statistics
-      expect(stats['error']).to eq(0)
-      expect(stats['warning']).to eq(0)
-      expect(stats['convention']).to eq(0)
+      expect(stats[:error]).to eq(0)
+      expect(stats[:warning]).to eq(0)
+      expect(stats[:convention]).to eq(0)
     end
 
     it 'handles multiple offenses of same severity' do
@@ -133,7 +133,7 @@ RSpec.describe Yard::Lint::Results::Aggregate do
         ]
       )
       agg = described_class.new([result_with_multiple], config)
-      expect(agg.statistics['error']).to eq(2)
+      expect(agg.statistics[:error]).to eq(2)
     end
   end
 

@@ -7,7 +7,7 @@ module Yard
         module InvalidDirectiveFormat
           # Parser for InvalidDirectiveFormat warnings
           class Parser < ::Yard::Lint::Parsers::OneLineBase
-            # Set of regexps for detecting warnings reported by yard stats
+            # Set of regexps for detecting warnings reported by YARD stats
             self.regexps = {
               general: /^\[warn\]: Invalid directive format/,
               message: /\[warn\]: (.*) in file/,

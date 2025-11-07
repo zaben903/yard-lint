@@ -5,13 +5,13 @@ module Yard
     module Validators
       module Warnings
         module InvalidDirectiveFormat
-          # Runs yard stats to check for invaliddirectiveformat
+          # Runs YARD stats command to check for invaliddirectiveformat
           class Validator < Base
             private
 
-            # Runs yard stats with proper settings on a given dir and files
+            # Runs YARD stats command with proper settings on a given dir and files
             # @param dir [String] dir where we should generate the temp docs
-            # @param escaped_file_names [String] files for which we want to get the stats
+            # @param escaped_file_names [String] files for which we want to run YARD stats
             # @return [Hash] shell command execution hash results
             def yard_cmd(dir, escaped_file_names)
               cmd = <<~CMD

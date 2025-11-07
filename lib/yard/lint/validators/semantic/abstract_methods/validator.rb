@@ -9,9 +9,9 @@ module Yard
           class Validator < Base
             private
 
-            # Runs yard list query to find abstract methods with implementation
-            # @param dir [String] dir where the yard db is (or where it should be generated)
-            # @param escaped_file_names [String] files for which we want to get the stats
+            # Runs YARD list query to find abstract methods with implementation
+            # @param dir [String] dir where the YARD db is (or where it should be generated)
+            # @param escaped_file_names [String] files for which we want to run YARD
             # @return [Hash] shell command execution hash results
             def yard_cmd(dir, escaped_file_names)
               cmd = <<~CMD

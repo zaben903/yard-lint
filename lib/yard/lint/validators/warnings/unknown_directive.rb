@@ -3,9 +3,10 @@
 module Yard
   module Lint
     module Validators
+      # Validators for checking YARD warnings
       module Warnings
-        # Stats validator module
-        module Stats
+        # UnknownDirective validator module
+        module UnknownDirective
         end
       end
     end

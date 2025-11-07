@@ -40,8 +40,8 @@ RSpec.describe Yard::Lint::ConfigLoader do
         .to eq(Yard::Lint::Validators::Semantic::AbstractMethods)
     end
 
-    it 'returns the correct module for Warnings/Stats' do
-      expect(described_class.validator_module('Warnings/Stats')).to eq(Yard::Lint::Validators::Warnings::Stats)
+    it 'returns the correct module for Warnings/UnknownTag' do
+      expect(described_class.validator_module('Warnings/UnknownTag')).to eq(Yard::Lint::Validators::Warnings::UnknownTag)
     end
 
     it 'returns the correct module for Documentation/UndocumentedObjects' do

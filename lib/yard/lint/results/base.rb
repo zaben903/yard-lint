@@ -78,7 +78,7 @@ module Yard
           @offenses.empty?
         end
 
-        # Delegate array methods to offenses for backward compatibility
+        # Delegate array methods to offenses for convenience
         # @return [Array] mapped offenses
         def map(&)
           @offenses.map(&)
@@ -90,7 +90,7 @@ module Yard
           @offenses.each(&)
         end
 
-        # Full validator name in format 'Department/ValidatorName'
+        # Full validator name in format 'Category/ValidatorName'
         # Extracted from the class path
         # @return [String] validator name for config lookup
         def validator_name
@@ -99,9 +99,9 @@ module Yard
           validators_index = parts.index('Validators')
           return '' unless validators_index
 
-          department = parts[validators_index + 1]
+          category = parts[validators_index + 1]
           name = parts[validators_index + 2]
-          "#{department}/#{name}"
+          "#{category}/#{name}"
         end
 
         private
@@ -115,7 +115,7 @@ module Yard
         end
 
         # Build array of offense hashes in unified format
-        # Merges original parsed data with standard offense fields for backward compatibility
+        # Merges original parsed data with standard offense fields
         # @return [Array<Hash>] array of offense hashes
         def build_offenses
           @parsed_data.map do |offense_data|

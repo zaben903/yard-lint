@@ -5,8 +5,6 @@ module Yard
     # Result objects for validators
     module Results
       # Aggregates multiple validator results into a single result object
-      # Maintains the same public interface as the legacy Result class
-      # for backward compatibility
       class Aggregate
         # Error severity level constant
         SEVERITY_ERROR = 'error'
@@ -44,22 +42,18 @@ module Yard
         end
 
         # Get offense statistics by severity
-        # @return [Hash] hash with severity counts
+        # @return [Hash] hash with severity counts (using symbol keys)
         def statistics
           stats = {
-            SEVERITY_ERROR => 0,
-            SEVERITY_WARNING => 0,
-            SEVERITY_CONVENTION => 0,
-            :error => 0,
-            :warning => 0,
-            :convention => 0,
-            :total => 0
+            error: 0,
+            warning: 0,
+            convention: 0,
+            total: 0
           }
 
           offenses.each do |offense|
-            severity = offense[:severity]
+            severity = offense[:severity].to_sym
             stats[severity] += 1 if stats.key?(severity)
-            stats[severity.to_sym] += 1 if stats.key?(severity.to_sym)
             stats[:total] += 1
           end
 
@@ -77,9 +71,9 @@ module Yard
 
           case fail_on
           when SEVERITY_ERROR
-            statistics[SEVERITY_ERROR].positive? ? 1 : 0
+            statistics[:error].positive? ? 1 : 0
           when SEVERITY_WARNING
-            (statistics[SEVERITY_ERROR] + statistics[SEVERITY_WARNING]).positive? ? 1 : 0
+            (statistics[:error] + statistics[:warning]).positive? ? 1 : 0
           when SEVERITY_CONVENTION
             offenses.any? ? 1 : 0
           else

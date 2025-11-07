@@ -12,8 +12,8 @@ module Yard
         # @param validator_name [String] validator name (e.g., 'Tags/Order')
         # @return [Module, nil] validator namespace module or nil if doesn't exist
         def validator_module(validator_name)
-          department, name = validator_name.split('/')
-          module_path = "Validators::#{department}::#{name}"
+          category, name = validator_name.split('/')
+          module_path = "Validators::#{category}::#{name}"
 
           module_path.split('::').reduce(Yard::Lint) do |mod, const_name|
             return nil unless mod.const_defined?(const_name)
@@ -37,9 +37,9 @@ module Yard
         # Auto-discover validators from the codebase
         # Scans the validators directory and loads all validator modules that have
         # an .id method and .defaults method (indicating they're valid validators)
-        # @return [Hash<String, Array<String>>] hash of department names to validator names
+        # @return [Hash<String, Array<String>>] hash of category names to validator names
         def discover_validators
-          departments = Hash.new { |h, k| h[k] = [] }
+          categories = Hash.new { |h, k| h[k] = [] }
 
           validators_path = File.join(__dir__, 'validators')
 
@@ -48,29 +48,29 @@ module Yard
             # Require the validator module file to ensure it's loaded
             require file_path
 
-            # Extract department and validator name from path
+            # Extract category and validator name from path
             # e.g., .../validators/tags/order.rb -> ['tags', 'order']
             relative_path = file_path.sub("#{validators_path}/", '')
             parts = relative_path.sub('.rb', '').split('/')
-            department_dir = parts[0]
+            category_dir = parts[0]
             validator_dir = parts[1]
 
             # Convert to proper casing:
             # 'tags' -> 'Tags', 'undocumented_objects' -> 'UndocumentedObjects'
-            department = department_dir.split('_').map(&:capitalize).join
+            category = category_dir.split('_').map(&:capitalize).join
             validator = validator_dir.split('_').map(&:capitalize).join
 
             # Construct the validator name
-            validator_name = "#{department}/#{validator}"
+            validator_name = "#{category}/#{validator}"
 
             # Verify it's a valid validator by checking if it has a Config class
             cfg = validator_config(validator_name)
             # Every validator must have a Config with id and defaults
-            departments[department] << validator_name if cfg && cfg.id && cfg.defaults
+            categories[category] << validator_name if cfg && cfg.id && cfg.defaults
           end
 
           # Sort for consistent ordering
-          departments.transform_values(&:sort).sort.to_h
+          categories.transform_values(&:sort).sort.to_h
         end
 
         # Load configuration from file with inheritance support

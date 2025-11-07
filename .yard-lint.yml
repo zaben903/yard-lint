@@ -89,14 +89,37 @@ Tags/OptionTags:
   Severity: warning
 
 # Warnings validators - catches YARD parser errors
-Warnings:
+Warnings/UnknownTag:
+  Description: 'Detects unknown YARD tags.'
+  Enabled: true
+  Severity: error
+
+Warnings/UnknownDirective:
+  Description: 'Detects unknown YARD directives.'
+  Enabled: true
+  Severity: error
+
+Warnings/InvalidTagFormat:
+  Description: 'Detects malformed tag syntax.'
+  Enabled: true
+  Severity: error
+
+Warnings/InvalidDirectiveFormat:
+  Description: 'Detects malformed directive syntax.'
+  Enabled: true
+  Severity: error
+
+Warnings/DuplicatedParameterName:
+  Description: 'Detects duplicate @param tags.'
+  Enabled: true
+  Severity: error
+
+Warnings/UnknownParameterName:
+  Description: 'Detects @param tags for non-existent parameters.'
   Enabled: true
   Severity: error
 
 # Semantic validators - validates code semantics
-Semantic:
-  Enabled: true
-
 Semantic/AbstractMethods:
   Description: 'Ensures @abstract methods do not have real implementations.'
   Enabled: true

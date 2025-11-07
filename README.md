@@ -68,13 +68,13 @@ YARD-Lint is configured via a `.yard-lint.yml` configuration file (similar to `.
 
 ### Configuration File
 
-Create a `.yard-lint.yml` file in your project root using the **new hierarchical format** (similar to RuboCop):
+Create a `.yard-lint.yml` file in your project root:
 
 ```yaml
 # .yard-lint.yml
 # Global settings for all validators
 AllValidators:
-  # YARD command-line options
+  # YARD command-line options (applied to all validators by default)
   YardOptions:
     - --private
     - --protected
@@ -89,10 +89,7 @@ AllValidators:
   # Exit code behavior (error, warning, convention, never)
   FailOnSeverity: warning
 
-# Documentation validators - checks for missing documentation
-Documentation:
-  Enabled: true
-
+# Individual validator configuration
 Documentation/UndocumentedObjects:
   Description: 'Checks for classes, modules, and methods without documentation.'
   Enabled: true
@@ -103,9 +100,10 @@ Documentation/UndocumentedMethodArguments:
   Enabled: true
   Severity: warning
 
-# Tags validators - validates YARD tag quality
-Tags:
+Documentation/UndocumentedBooleanMethods:
+  Description: 'Checks that question mark methods document their boolean return.'
   Enabled: true
+  Severity: warning
 
 Tags/Order:
   Description: 'Enforces consistent ordering of YARD tags.'
@@ -144,14 +142,36 @@ Tags/OptionTags:
   Enabled: true
   Severity: warning
 
-# Warnings validators - catches YARD parser errors (always enabled)
-Warnings:
+# Warnings validators - catches YARD parser errors
+Warnings/UnknownTag:
+  Description: 'Detects unknown YARD tags.'
   Enabled: true
   Severity: error
 
-# Semantic validators - validates code semantics
-Semantic:
+Warnings/UnknownDirective:
+  Description: 'Detects unknown YARD directives.'
   Enabled: true
+  Severity: error
+
+Warnings/InvalidTagFormat:
+  Description: 'Detects malformed tag syntax.'
+  Enabled: true
+  Severity: error
+
+Warnings/InvalidDirectiveFormat:
+  Description: 'Detects malformed directive syntax.'
+  Enabled: true
+  Severity: error
+
+Warnings/DuplicatedParameterName:
+  Description: 'Detects duplicate @param tags.'
+  Enabled: true
+  Severity: error
+
+Warnings/UnknownParameterName:
+  Description: 'Detects @param tags for non-existent parameters.'
+  Enabled: true
+  Severity: error
 
 Semantic/AbstractMethods:
   Description: 'Ensures @abstract methods do not have real implementations.'
@@ -161,10 +181,10 @@ Semantic/AbstractMethods:
 
 #### Key Features
 
-- **RuboCop-like structure**: Organized by validator departments (Documentation, Tags, Warnings, Semantic)
 - **Per-validator control**: Enable/disable and configure each validator independently
 - **Custom severity**: Override severity levels per validator
 - **Per-validator exclusions**: Add validator-specific file exclusions (in addition to global ones)
+- **Per-validator YardOptions**: Override YARD options for specific validators if needed
 - **Inheritance support**: Use `inherit_from` and `inherit_gem` to share configurations
 - **Self-documenting**: Each validator can include a `Description` field
 
@@ -238,32 +258,25 @@ Tags/ApiTags:
     - 'spec/**/*'  # Only exclude specs
 ```
 
-**Example: Enforce tag order on private methods but allow them to be undocumented**
+**Example: Override YARD options per validator**
 
 ```yaml
 AllValidators:
-  # Include private methods in YARD parsing
+  # Default: only parse public methods
+  YardOptions: []
+
+# Check all methods (including private) for tag order
+Tags/Order:
   YardOptions:
     - --private
+    - --protected
 
-# Don't require documentation on private methods
+# But only require documentation for public methods
 Documentation/UndocumentedObjects:
-  Enabled: true
-  Exclude:
-    - 'lib/**/*'  # Exclude all lib files (or use more specific patterns)
-
-Documentation/UndocumentedMethodArguments:
-  Enabled: true
-  Exclude:
-    - 'lib/**/*'
-
-# But DO enforce correct tag order if private methods have docs
-Tags/Order:
-  Enabled: true
-  Exclude: []  # No exclusions - check all methods
+  YardOptions: []  # Only public methods
 ```
 
-This configuration allows private methods to remain undocumented, but if you do document them, the tags must be in the correct order.
+This allows you to enforce correct tag formatting on all methods while only requiring documentation on public methods.
 
 **How it works:**
 
@@ -304,9 +317,11 @@ Supported glob patterns:
 
 | Option | Description | Default | Type |
 |--------|-------------|---------|------|
-| `AllValidators/YardOptions` | YARD command-line options (e.g., `--private`, `--protected`) | `[]` | Array of strings |
-| `AllValidators/Exclude` | File patterns to exclude from linting | `['\.git', 'vendor/**/*', 'node_modules/**/*']` | Array of glob patterns |
+| `AllValidators/YardOptions` | YARD command-line options applied to all validators (e.g., `--private`, `--protected`). Can be overridden per-validator. | `[]` | Array of strings |
+| `AllValidators/Exclude` | File patterns to exclude from all validators. Per-validator exclusions are additive. | `['\.git', 'vendor/**/*', 'node_modules/**/*']` | Array of glob patterns |
 | `AllValidators/FailOnSeverity` | Exit with error code for this severity level and above | `warning` | `error`, `warning`, `convention`, or `never` |
+| `<Validator>/YardOptions` | Override YARD options for a specific validator | Inherits from `AllValidators/YardOptions` | Array of strings |
+| `<Validator>/Exclude` | Additional file patterns to exclude for this validator only | `[]` | Array of glob patterns |
 
 ## Severity Levels
 
@@ -506,7 +521,7 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 ### Running Tests
 
 ```bash
-# Run all tests (477 examples, ~45 seconds)
+# Run all tests (529 examples, ~1 minute)
 bundle exec rspec
 
 # Run with profiling to see slowest tests
@@ -521,7 +536,7 @@ bundle exec rspec spec/yard/lint/config_spec.rb
 
 The test suite includes comprehensive unit tests and integration tests for all validators. Tests use intelligent caching to share YARD databases across tests for optimal performance.
 
-**Test Coverage**: 94.92% (1084/1142 lines)
+**Test Coverage**: 95.04% (1227/1291 lines)
 
 ## License
 
