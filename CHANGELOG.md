@@ -8,6 +8,16 @@
   - Supports 'short' style: `{K => V}` (Ruby-like syntax without Hash prefix)
   - Automatically detects violations in either direction and suggests correct style
   - Updated messages to show correct suggestion based on enforced style
+- **[Feature]** Add `Documentation/UndocumentedOptions` validator to detect methods with options hash parameters but no @option tags
+  - Detects `options = {}`, `opts = {}`, `**kwargs`, and similar patterns
+  - Helps catch missing documentation for option hash parameters
+  - Configurable via `Documentation/UndocumentedOptions` in config
+- **[Feature]** Add `Documentation/MarkdownSyntax` validator to detect common markdown syntax errors in documentation
+  - Detects unclosed backticks in inline code
+  - Detects unclosed code blocks (```)
+  - Detects unclosed bold formatting (**)
+  - Detects invalid list markers (• instead of - or *)
+  - Configurable via `Documentation/MarkdownSyntax` in config
 - [Enhancement] Simplify README by condensing alternative style examples
 - [Documentation] Add Quick Start section to README with `--init` command
 - [Documentation] Update CLI help to show new `--init` and `--force` options

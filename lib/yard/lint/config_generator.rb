@@ -46,6 +46,16 @@ module Yard
           Enabled: true
           Severity: warning
 
+        Documentation/UndocumentedOptions:
+          Description: 'Detects methods with options hash parameters but no @option tags.'
+          Enabled: true
+          Severity: warning
+
+        Documentation/MarkdownSyntax:
+          Description: 'Detects common markdown syntax errors in documentation.'
+          Enabled: true
+          Severity: warning
+
         # Tags validators
         Tags/Order:
           Description: 'Enforces consistent ordering of YARD tags.'
