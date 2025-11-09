@@ -7,6 +7,7 @@ module Yard
         module MarkdownSyntax
           # Builds human-readable messages for MarkdownSyntax violations
           class MessagesBuilder
+            # Maps markdown syntax error types to human-readable descriptions
             ERROR_DESCRIPTIONS = {
               'unclosed_backtick' => 'Unclosed backtick in documentation',
               'unclosed_code_block' => 'Unclosed code block (```) in documentation',

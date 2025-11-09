@@ -6,11 +6,13 @@ module Yard
       module Documentation
         module MarkdownSyntax
           # Parses YARD output for markdown syntax violations
-          class Parser
+          class Parser < Parsers::Base
             # Parse YARD output into structured violations
             # @param output [String] raw YARD output
             # @return [Array<Hash>] array of violation hashes
-            def self.parse(output)
+            def call(output)
+              return [] if output.nil? || output.empty?
+
               violations = []
               lines = output.lines.map(&:chomp)
 

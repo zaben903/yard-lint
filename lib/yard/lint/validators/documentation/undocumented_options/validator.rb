@@ -11,26 +11,7 @@ module Yard
             # @return [String] YARD Ruby query code
             def query
               <<~QUERY.strip
-                '
-                if object.is_a?(YARD::CodeObjects::MethodObject)
-                  params = object.parameters || []
-                  has_options_param = params.any? { |p|
-                    # Match options = {}, opts = {}, **kwargs, **options
-                    p[0] =~ /^(options?|opts?|kwargs)$/ ||
-                    p[0] =~ /^\*\*/ ||
-                    (p[0] =~ /^(options?|opts?|kwargs)$/ && p[1] =~ /^\{\}/)
-                  }
-
-                  if has_options_param
-                    option_tags = object.tags(:option)
-                    if option_tags.empty?
-                      puts object.file + ":" + object.line.to_s + ": " + object.title
-                      puts params.map { |p| p.join(" ") }.join(", ")
-                    end
-                  end
-                end
-                false
-                '
+                'if object.is_a?(YARD::CodeObjects::MethodObject); params = object.parameters || []; has_options_param = params.any? { |p| p[0] =~ /^(options?|opts?|kwargs)$/ || p[0] =~ /^\\*\\*/ || (p[0] =~ /^(options?|opts?|kwargs)$/ && p[1] =~ /^\\{\\}/) }; if has_options_param; option_tags = object.tags(:option); if option_tags.empty?; puts object.file + ":" + object.line.to_s + ": " + object.title; puts params.map { |p| p.join(" ") }.join(", "); end; end; end; false'
               QUERY
             end
 

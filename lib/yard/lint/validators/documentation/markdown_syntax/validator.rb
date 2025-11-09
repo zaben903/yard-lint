@@ -11,51 +11,7 @@ module Yard
             # @return [String] YARD Ruby query code
             def query
               <<~QUERY.strip
-                '
-                docstring_text = object.docstring.to_s
-                unless docstring_text.empty?
-                  errors = []
-
-                  # Check for unclosed backticks
-                  backtick_count = docstring_text.scan(/`/).count
-                  if backtick_count.odd?
-                    errors << "unclosed_backtick"
-                  end
-
-                  # Check for unclosed code blocks
-                  code_block_starts = docstring_text.scan(/^```/).count
-                  code_block_ends = docstring_text.scan(/^```/).count
-                  if code_block_starts != code_block_ends
-                    errors << "unclosed_code_block"
-                  end
-
-                  # Check for broken bold/italic formatting
-                  # ** without matching pair (not inside code)
-                  non_code_text = docstring_text.gsub(/`[^`]*`/, "")
-                  bold_count = non_code_text.scan(/\*\*/).count
-                  if bold_count.odd?
-                    errors << "unclosed_bold"
-                  end
-
-                  # Check for malformed lists (list items not starting with - or *)
-                  lines = docstring_text.lines
-                  lines.each_with_index do |line, line_idx|
-                    # Detect lines that look like list items but have wrong syntax
-                    # e.g., "•" or numbers without proper format
-                    stripped = line.strip
-                    # Check for bullet-like characters that are not markdown
-                    if stripped =~ /^[•·]/
-                      errors << "invalid_list_marker:" + (line_idx + 1).to_s
-                    end
-                  end
-
-                  unless errors.empty?
-                    puts object.file + ":" + object.line.to_s + ": " + object.title
-                    puts errors.join("|")
-                  end
-                end
-                false
-                '
+                'docstring_text = object.docstring.to_s; unless docstring_text.empty?; errors = []; backtick_count = docstring_text.scan(/\\x60/).count; errors << "unclosed_backtick" if backtick_count.odd?; code_block_count = docstring_text.scan(/^```/).count; errors << "unclosed_code_block" if code_block_count.odd?; non_code_text = docstring_text.gsub(/\\x60[^\\x60]*\\x60/, ""); bold_count = non_code_text.scan(/\\*\\*/).count; errors << "unclosed_bold" if bold_count.odd?; lines = docstring_text.lines; lines.each_with_index do |line, line_idx|; stripped = line.strip; errors << "invalid_list_marker:" + (line_idx + 1).to_s if stripped =~ /^[•·]/; end; unless errors.empty?; puts object.file + ":" + object.line.to_s + ": " + object.title; puts errors.join("|"); end; end; false'
               QUERY
             end
 
