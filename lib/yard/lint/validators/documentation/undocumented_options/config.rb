@@ -5,14 +5,12 @@ module Yard
     module Validators
       module Documentation
         module UndocumentedOptions
-          # Configuration for the UndocumentedOptions validator
-          class Config < Configs::Base
-            # Default configuration values for UndocumentedOptions
-            # @return [Hash] default settings
+          # Configuration for UndocumentedOptions validator
+          class Config < ::Yard::Lint::Validators::Config
+            self.id = :undocumented_options
             self.defaults = {
               'Enabled' => true,
-              'Severity' => 'warning',
-              'Description' => 'Detects methods with options hash parameters but no @option tags.'
+              'Severity' => 'warning'
             }.freeze
           end
         end

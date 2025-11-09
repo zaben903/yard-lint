@@ -5,14 +5,12 @@ module Yard
     module Validators
       module Documentation
         module MarkdownSyntax
-          # Configuration for the MarkdownSyntax validator
-          class Config < Configs::Base
-            # Default configuration values for MarkdownSyntax
-            # @return [Hash] default settings
+          # Configuration for MarkdownSyntax validator
+          class Config < ::Yard::Lint::Validators::Config
+            self.id = :markdown_syntax
             self.defaults = {
               'Enabled' => true,
-              'Severity' => 'warning',
-              'Description' => 'Detects common markdown syntax errors in documentation.'
+              'Severity' => 'warning'
             }.freeze
           end
         end

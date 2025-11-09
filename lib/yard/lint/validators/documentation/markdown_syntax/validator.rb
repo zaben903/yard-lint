@@ -39,13 +39,13 @@ module Yard
 
                   # Check for malformed lists (list items not starting with - or *)
                   lines = docstring_text.lines
-                  lines.each_with_index do |line, idx|
+                  lines.each_with_index do |line, line_idx|
                     # Detect lines that look like list items but have wrong syntax
                     # e.g., "•" or numbers without proper format
                     stripped = line.strip
                     # Check for bullet-like characters that are not markdown
                     if stripped =~ /^[•·]/
-                      errors << "invalid_list_marker:#{idx + 1}"
+                      errors << "invalid_list_marker:" + (line_idx + 1).to_s
                     end
                   end
 
@@ -59,14 +59,20 @@ module Yard
               QUERY
             end
 
-            # Process YARD output and build result
-            # @param output [String] raw YARD command output
-            # @return [Result] validation result
-            def call(output)
-              Result.new(
-                severity: severity,
-                offenses: Parser.parse(output)
-              )
+            # Builds and executes the YARD command to detect markdown syntax errors
+            # @param dir [String] the directory containing the .yardoc database
+            # @param file_list_path [String] path to file containing list of files to analyze
+            # @return [String] command output
+            def yard_cmd(dir, file_list_path)
+              cmd = <<~CMD
+                cat #{Shellwords.escape(file_list_path)} | xargs yard list \
+                  #{shell_arguments} \
+                --query #{query} \
+                -q \
+                -b #{Shellwords.escape(dir)}
+              CMD
+              cmd = cmd.tr("\n", ' ')
+              shell(cmd)
             end
           end
         end
