@@ -688,8 +688,6 @@ Tags/CollectionType:
 
 This validator ensures consistent type annotation positioning. By default, it enforces YARD standard (`@param name [Type]`), but you can configure it to enforce `type_first` style if your team prefers it.
 
-**YARD Standard (default):**
-
 ```ruby
 # Good - type after parameter name (YARD standard)
 # @param name [String] the user's name
@@ -704,30 +702,7 @@ def create_user(name, age)
 end
 ```
 
-**Alternative Style (`type_first`):**
-
-If your team prefers types before parameter names, configure it:
-
-```yaml
-Tags/TagTypePosition:
-  EnforcedStyle: type_first
-```
-
-```ruby
-# Good with type_first style
-# @param [String] name the user's name
-# @param [Integer] age the user's age
-def create_user(name, age)
-end
-
-# Bad with type_first style
-# @param name [String] the user's name
-# @param age [Integer] the user's age
-def create_user(name, age)
-end
-```
-
-**Note:** This validator only checks `@param` and `@option` tags. It doesn't check `@return` tags since they don't have parameter names.
+To use `type_first` style instead, set `EnforcedStyle: type_first` in your `.yard-lint.yml`.
 
 ## License
 
