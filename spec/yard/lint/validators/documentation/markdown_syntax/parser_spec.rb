@@ -15,14 +15,16 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 10,
-            object_name: 'MyClass#process',
-            errors: %w[unclosed_backtick]
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 10,
+              object_name: 'MyClass#process',
+              errors: %w[unclosed_backtick]
+            }
+          ]
+        )
       end
 
       it 'parses multiple errors for same object' do
@@ -33,14 +35,16 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 10,
-            object_name: 'MyClass#process',
-            errors: %w[unclosed_backtick unclosed_bold]
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 10,
+              object_name: 'MyClass#process',
+              errors: %w[unclosed_backtick unclosed_bold]
+            }
+          ]
+        )
       end
 
       it 'parses multiple violations' do
@@ -53,20 +57,22 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 10,
-            object_name: 'MyClass#process',
-            errors: %w[unclosed_backtick]
-          },
-          {
-            location: 'lib/example.rb',
-            line: 20,
-            object_name: 'MyClass#execute',
-            errors: %w[unclosed_bold]
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 10,
+              object_name: 'MyClass#process',
+              errors: %w[unclosed_backtick]
+            },
+            {
+              location: 'lib/example.rb',
+              line: 20,
+              object_name: 'MyClass#execute',
+              errors: %w[unclosed_bold]
+            }
+          ]
+        )
       end
 
       it 'parses invalid list marker with line number' do
@@ -77,14 +83,16 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 15,
-            object_name: 'MyClass#configure',
-            errors: %w[invalid_list_marker:3]
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 15,
+              object_name: 'MyClass#configure',
+              errors: %w[invalid_list_marker:3]
+            }
+          ]
+        )
       end
     end
 

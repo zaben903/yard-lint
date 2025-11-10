@@ -15,14 +15,16 @@ RSpec.describe Yard::Lint::Validators::Documentation::UndocumentedOptions::Parse
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 10,
-            object_name: 'MyClass#process',
-            params: 'data, options = {}'
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 10,
+              object_name: 'MyClass#process',
+              params: 'data, options = {}'
+            }
+          ]
+        )
       end
 
       it 'parses multiple violations' do
@@ -35,20 +37,22 @@ RSpec.describe Yard::Lint::Validators::Documentation::UndocumentedOptions::Parse
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 10,
-            object_name: 'MyClass#process',
-            params: 'data, options = {}'
-          },
-          {
-            location: 'lib/example.rb',
-            line: 20,
-            object_name: 'MyClass#execute',
-            params: 'data, opts = {}'
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 10,
+              object_name: 'MyClass#process',
+              params: 'data, options = {}'
+            },
+            {
+              location: 'lib/example.rb',
+              line: 20,
+              object_name: 'MyClass#execute',
+              params: 'data, opts = {}'
+            }
+          ]
+        )
       end
 
       it 'parses violation with kwargs' do
@@ -59,14 +63,16 @@ RSpec.describe Yard::Lint::Validators::Documentation::UndocumentedOptions::Parse
 
         result = parser.call(output)
 
-        expect(result).to eq([
-          {
-            location: 'lib/example.rb',
-            line: 15,
-            object_name: 'MyClass#configure',
-            params: '**options'
-          }
-        ])
+        expect(result).to eq(
+          [
+            {
+              location: 'lib/example.rb',
+              line: 15,
+              object_name: 'MyClass#configure',
+              params: '**options'
+            }
+          ]
+        )
       end
     end
 

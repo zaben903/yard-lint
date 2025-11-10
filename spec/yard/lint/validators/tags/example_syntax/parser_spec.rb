@@ -60,8 +60,8 @@ RSpec.describe Yard::Lint::Validators::Tags::ExampleSyntax::Parser do
             name: 'ExampleSyntax',
             object_name: 'Example#method',
             example_name: 'Basic usage',
-            error_message: "<compiled>:1: syntax errors found\n> 1 | result = broken\n" \
-              '    |                ^ unexpected end-of-input',
+            error_message: "<compiled>:1: syntax errors found\n> 1 | result = broken\n    " \
+                           '|                ^ unexpected end-of-input',
             location: 'lib/example.rb',
             line: 10
           }
