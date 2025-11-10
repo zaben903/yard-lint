@@ -375,6 +375,8 @@ Supported glob patterns:
 | `Documentation/UndocumentedObjects` | Checks for classes, modules, and methods without documentation | Enabled (warning) | `Enabled`, `Severity`, `Exclude`, `ExcludedMethods` |
 | `Documentation/UndocumentedMethodArguments` | Checks for method parameters without `@param` tags | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
 | `Documentation/UndocumentedBooleanMethods` | Checks that question mark methods document their boolean return | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
+| `Documentation/UndocumentedOptions` | Detects methods with options hash/kwargs parameters but no `@option` tags | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
+| `Documentation/MarkdownSyntax` | Detects common markdown syntax errors in documentation (unclosed backticks, invalid list markers, etc.) | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
 | **Tags Validators** |
 | `Tags/Order` | Enforces consistent ordering of YARD tags | Enabled (convention) | `Enabled`, `Severity`, `Exclude`, `EnforcedOrder` |
 | `Tags/InvalidTypes` | Validates type definitions in `@param`, `@return`, `@option` tags | Enabled (warning) | `Enabled`, `Severity`, `Exclude`, `ValidatedTags`, `ExtraTypes` |
@@ -384,6 +386,7 @@ Supported glob patterns:
 | `Tags/TagTypePosition` | Validates type annotation position (`@param name [Type]` vs `@param [Type] name`) | Enabled (convention) | `Enabled`, `Severity`, `Exclude`, `CheckedTags`, `EnforcedStyle` |
 | `Tags/ApiTags` | Enforces `@api` tags on public objects | Disabled (opt-in) | `Enabled`, `Severity`, `Exclude`, `AllowedApis` |
 | `Tags/OptionTags` | Requires `@option` tags for methods with options parameters | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
+| `Tags/ExampleSyntax` | Validates Ruby syntax in `@example` tags to catch broken code examples | Enabled (warning) | `Enabled`, `Severity`, `Exclude` |
 | **Warnings Validators** |
 | `Warnings/UnknownTag` | Detects unknown YARD tags | Enabled (error) | `Enabled`, `Severity`, `Exclude` |
 | `Warnings/UnknownDirective` | Detects unknown YARD directives | Enabled (error) | `Enabled`, `Severity`, `Exclude` |

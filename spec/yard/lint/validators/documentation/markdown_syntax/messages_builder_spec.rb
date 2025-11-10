@@ -63,7 +63,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::MessagesBu
     it 'formats multiple errors' do
       offense = {
         object_name: 'MyClass#process',
-        errors: ['unclosed_backtick', 'unclosed_bold']
+        errors: %w[unclosed_backtick unclosed_bold]
       }
 
       message = described_class.call(offense)

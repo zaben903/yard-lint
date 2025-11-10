@@ -20,7 +20,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
             location: 'lib/example.rb',
             line: 10,
             object_name: 'MyClass#process',
-            errors: ['unclosed_backtick']
+            errors: %w[unclosed_backtick]
           }
         ])
       end
@@ -38,7 +38,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
             location: 'lib/example.rb',
             line: 10,
             object_name: 'MyClass#process',
-            errors: ['unclosed_backtick', 'unclosed_bold']
+            errors: %w[unclosed_backtick unclosed_bold]
           }
         ])
       end
@@ -58,13 +58,13 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
             location: 'lib/example.rb',
             line: 10,
             object_name: 'MyClass#process',
-            errors: ['unclosed_backtick']
+            errors: %w[unclosed_backtick]
           },
           {
             location: 'lib/example.rb',
             line: 20,
             object_name: 'MyClass#execute',
-            errors: ['unclosed_bold']
+            errors: %w[unclosed_bold]
           }
         ])
       end
@@ -82,7 +82,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
             location: 'lib/example.rb',
             line: 15,
             object_name: 'MyClass#configure',
-            errors: ['invalid_list_marker:3']
+            errors: %w[invalid_list_marker:3]
           }
         ])
       end
