@@ -199,8 +199,6 @@ module Yard
         respond_to?(key) ? send(key) : nil
       end
 
-      private
-
       # Generic helper to set validator configuration
       # @param validator_name [String] full validator name (e.g., 'Tags/Order')
       # @param key [String] configuration key

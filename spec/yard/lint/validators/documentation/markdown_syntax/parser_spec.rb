@@ -3,7 +3,9 @@
 require 'spec_helper'
 
 RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
-  describe '.parse' do
+  let(:parser) { described_class.new }
+
+  describe '#call' do
     context 'with valid violations' do
       it 'parses single error' do
         output = <<~OUTPUT
@@ -11,7 +13,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
           unclosed_backtick
         OUTPUT
 
-        result = described_class.parse(output)
+        result = parser.call(output)
 
         expect(result).to eq([
           {
@@ -29,7 +31,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
           unclosed_backtick|unclosed_bold
         OUTPUT
 
-        result = described_class.parse(output)
+        result = parser.call(output)
 
         expect(result).to eq([
           {
@@ -49,7 +51,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
           unclosed_bold
         OUTPUT
 
-        result = described_class.parse(output)
+        result = parser.call(output)
 
         expect(result).to eq([
           {
@@ -73,7 +75,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
           invalid_list_marker:3
         OUTPUT
 
-        result = described_class.parse(output)
+        result = parser.call(output)
 
         expect(result).to eq([
           {
@@ -88,7 +90,7 @@ RSpec.describe Yard::Lint::Validators::Documentation::MarkdownSyntax::Parser do
 
     context 'with empty output' do
       it 'returns empty array' do
-        result = described_class.parse('')
+        result = parser.call('')
         expect(result).to eq([])
       end
     end

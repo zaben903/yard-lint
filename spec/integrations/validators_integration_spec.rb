@@ -5,8 +5,8 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when require_api_tags is enabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ApiTags', 'Enabled', true)
-          c.send(:set_validator_config, 'Tags/ApiTags', 'AllowedApis', %w[public private internal])
+          c.set_validator_config( 'Tags/ApiTags', 'Enabled', true)
+          c.set_validator_config( 'Tags/ApiTags', 'AllowedApis', %w[public private internal])
         end
       end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when require_api_tags is disabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ApiTags', 'Enabled', false)
+          c.set_validator_config( 'Tags/ApiTags', 'Enabled', false)
         end
       end
 
@@ -38,8 +38,8 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'with custom allowed APIs' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ApiTags', 'Enabled', true)
-          c.send(:set_validator_config, 'Tags/ApiTags', 'AllowedApis', %w[public])
+          c.set_validator_config( 'Tags/ApiTags', 'Enabled', true)
+          c.set_validator_config( 'Tags/ApiTags', 'AllowedApis', %w[public])
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when validate_abstract_methods is enabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Semantic/AbstractMethods', 'Enabled', true)
+          c.set_validator_config( 'Semantic/AbstractMethods', 'Enabled', true)
         end
       end
 
@@ -71,7 +71,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when validate_abstract_methods is disabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Semantic/AbstractMethods', 'Enabled', false)
+          c.set_validator_config( 'Semantic/AbstractMethods', 'Enabled', false)
         end
       end
 
@@ -87,7 +87,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when validate_option_tags is enabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/OptionTags', 'Enabled', true)
+          c.set_validator_config( 'Tags/OptionTags', 'Enabled', true)
         end
       end
 
@@ -102,14 +102,17 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when validate_option_tags is disabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/OptionTags', 'Enabled', false)
+          c.set_validator_config('Tags/OptionTags', 'Enabled', false)
+          # Disable ExampleSyntax to avoid false positives on output format examples
+          c.set_validator_config('Tags/ExampleSyntax', 'Enabled', false)
         end
       end
 
       it 'does not run option tags validation' do
         result = Yard::Lint.run(path: 'lib', config: config)
 
-        expect(result.offenses.select { |o| o[:name].to_s.include?('Option') }).to be_empty
+        # Check specifically for OptionTags violations, not other validators with "Option" in name
+        expect(result.offenses.select { |o| o[:name] == 'OptionTags' }).to be_empty
       end
     end
   end
@@ -117,9 +120,9 @@ RSpec.describe 'Yard::Lint Validators' do
   describe 'Combined Validators' do
     let(:config) do
       Yard::Lint::Config.new do |c|
-        c.send(:set_validator_config, 'Tags/ApiTags', 'Enabled', true)
-        c.send(:set_validator_config, 'Semantic/AbstractMethods', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/OptionTags', 'Enabled', true)
+        c.set_validator_config( 'Tags/ApiTags', 'Enabled', true)
+        c.set_validator_config( 'Semantic/AbstractMethods', 'Enabled', true)
+        c.set_validator_config( 'Tags/OptionTags', 'Enabled', true)
       end
     end
 
@@ -144,9 +147,9 @@ RSpec.describe 'Yard::Lint Validators' do
   describe 'Documentation Category Validators Together' do
     let(:config) do
       Yard::Lint::Config.new do |c|
-        c.send(:set_validator_config, 'Documentation/UndocumentedObjects', 'Enabled', true)
-        c.send(:set_validator_config, 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
-        c.send(:set_validator_config, 'Documentation/UndocumentedBooleanMethods', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedObjects', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedBooleanMethods', 'Enabled', true)
       end
     end
 
@@ -187,9 +190,9 @@ RSpec.describe 'Yard::Lint Validators' do
   describe 'Tags Category Validators Together' do
     let(:config) do
       Yard::Lint::Config.new do |c|
-        c.send(:set_validator_config, 'Tags/Order', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/InvalidTypes', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/TypeSyntax', 'Enabled', true)
+        c.set_validator_config( 'Tags/Order', 'Enabled', true)
+        c.set_validator_config( 'Tags/InvalidTypes', 'Enabled', true)
+        c.set_validator_config( 'Tags/TypeSyntax', 'Enabled', true)
       end
     end
 
@@ -218,10 +221,10 @@ RSpec.describe 'Yard::Lint Validators' do
   describe 'Warnings Category Validators Together' do
     let(:config) do
       Yard::Lint::Config.new do |c|
-        c.send(:set_validator_config, 'Warnings/UnknownTag', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/UnknownParameterName', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/DuplicatedParameterName', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/InvalidTagFormat', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownTag', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownParameterName', 'Enabled', true)
+        c.set_validator_config( 'Warnings/DuplicatedParameterName', 'Enabled', true)
+        c.set_validator_config( 'Warnings/InvalidTagFormat', 'Enabled', true)
       end
     end
 
@@ -252,9 +255,9 @@ RSpec.describe 'Yard::Lint Validators' do
     let(:config) do
       Yard::Lint::Config.new do |c|
         # Mix Documentation + Tags + Warnings
-        c.send(:set_validator_config, 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/Order', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/UnknownParameterName', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
+        c.set_validator_config( 'Tags/Order', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownParameterName', 'Enabled', true)
       end
     end
 
@@ -290,7 +293,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when example_syntax is enabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ExampleSyntax', 'Enabled', true)
+          c.set_validator_config( 'Tags/ExampleSyntax', 'Enabled', true)
         end
       end
 
@@ -348,7 +351,7 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'when example_syntax is disabled' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ExampleSyntax', 'Enabled', false)
+          c.set_validator_config( 'Tags/ExampleSyntax', 'Enabled', false)
         end
       end
 
@@ -363,9 +366,9 @@ RSpec.describe 'Yard::Lint Validators' do
     context 'with valid examples' do
       let(:config) do
         Yard::Lint::Config.new do |c|
-          c.send(:set_validator_config, 'Tags/ExampleSyntax', 'Enabled', true)
+          c.set_validator_config( 'Tags/ExampleSyntax', 'Enabled', true)
           # Disable other validators to isolate test
-          c.send(:set_validator_config, 'Tags/Order', 'Enabled', false)
+          c.set_validator_config( 'Tags/Order', 'Enabled', false)
         end
       end
 
@@ -386,22 +389,22 @@ RSpec.describe 'Yard::Lint Validators' do
     let(:config) do
       Yard::Lint::Config.new do |c|
         # Enable every single validator
-        c.send(:set_validator_config, 'Documentation/UndocumentedObjects', 'Enabled', true)
-        c.send(:set_validator_config, 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
-        c.send(:set_validator_config, 'Documentation/UndocumentedBooleanMethods', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/Order', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/ApiTags', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/OptionTags', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/InvalidTypes', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/TypeSyntax', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/UnknownTag', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/UnknownDirective', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/InvalidDirectiveFormat', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/InvalidTagFormat', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/DuplicatedParameterName', 'Enabled', true)
-        c.send(:set_validator_config, 'Warnings/UnknownParameterName', 'Enabled', true)
-        c.send(:set_validator_config, 'Semantic/AbstractMethods', 'Enabled', true)
-        c.send(:set_validator_config, 'Tags/ExampleSyntax', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedObjects', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedMethodArguments', 'Enabled', true)
+        c.set_validator_config( 'Documentation/UndocumentedBooleanMethods', 'Enabled', true)
+        c.set_validator_config( 'Tags/Order', 'Enabled', true)
+        c.set_validator_config( 'Tags/ApiTags', 'Enabled', true)
+        c.set_validator_config( 'Tags/OptionTags', 'Enabled', true)
+        c.set_validator_config( 'Tags/InvalidTypes', 'Enabled', true)
+        c.set_validator_config( 'Tags/TypeSyntax', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownTag', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownDirective', 'Enabled', true)
+        c.set_validator_config( 'Warnings/InvalidDirectiveFormat', 'Enabled', true)
+        c.set_validator_config( 'Warnings/InvalidTagFormat', 'Enabled', true)
+        c.set_validator_config( 'Warnings/DuplicatedParameterName', 'Enabled', true)
+        c.set_validator_config( 'Warnings/UnknownParameterName', 'Enabled', true)
+        c.set_validator_config( 'Semantic/AbstractMethods', 'Enabled', true)
+        c.set_validator_config( 'Tags/ExampleSyntax', 'Enabled', true)
       end
     end
 

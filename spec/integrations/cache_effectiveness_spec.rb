@@ -7,6 +7,8 @@ RSpec.describe 'YARD Command Cache Effectiveness', :cache_isolation do
   let(:config) do
     Yard::Lint::Config.new do |c|
       c.exclude = []
+      # Disable ExampleSyntax to avoid interference from test fixtures
+      c.set_validator_config('Tags/ExampleSyntax', 'Enabled', false)
     end
   end
 

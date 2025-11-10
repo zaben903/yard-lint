@@ -7,6 +7,8 @@ RSpec.describe 'Yard::Lint Integration Tests' do
   let(:config) do
     Yard::Lint::Config.new do |c|
       c.exclude = []
+      # Disable ExampleSyntax to avoid false positives on output format examples
+      c.set_validator_config('Tags/ExampleSyntax', 'Enabled', false)
     end
   end
 

@@ -17,6 +17,9 @@ RSpec.describe 'Edge case file handling' do
           },
           'Documentation' => {
             'Enabled' => true
+          },
+          'Tags/ExampleSyntax' => {
+            'Enabled' => false
           }
         }
       )
@@ -42,6 +45,9 @@ RSpec.describe 'Edge case file handling' do
           },
           'Documentation' => {
             'Enabled' => true
+          },
+          'Tags/ExampleSyntax' => {
+            'Enabled' => false
           }
         }
       )
@@ -67,6 +73,9 @@ RSpec.describe 'Edge case file handling' do
           },
           'Documentation' => {
             'Enabled' => true
+          },
+          'Tags/ExampleSyntax' => {
+            'Enabled' => false
           }
         }
       )
