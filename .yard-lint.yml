@@ -15,6 +15,13 @@ AllValidators:
     - 'node_modules/**/*'
     - 'spec/**/*'
     - 'test/**/*'
+    # Validator implementation files (main module, config, parser, etc.)
+    # These contain extensive documentation with examples of bad code (intentional)
+    # They also have internal implementation details that don't need full documentation
+    - '**/validators/documentation/**/*.rb'
+    - '**/validators/tags/**/*.rb'
+    - '**/validators/warnings/**/*.rb'
+    - '**/validators/semantic/**/*.rb'
 
   # Exit code behavior (error, warning, convention, never)
   FailOnSeverity: warning
@@ -131,6 +138,41 @@ Tags/ExampleSyntax:
   Description: 'Validates Ruby syntax in @example tags.'
   Enabled: true
   Severity: warning
+
+Tags/RedundantParamDescription:
+  Description: 'Detects meaningless parameter descriptions that add no value.'
+  Enabled: true
+  Severity: convention
+  CheckedTags:
+    - param
+    - option
+  # Articles that trigger the article_param pattern
+  Articles:
+    - The
+    - the
+    - A
+    - a
+    - An
+    - an
+  # Maximum word count for redundant descriptions (longer descriptions are never flagged)
+  MaxRedundantWords: 6
+  # Generic terms that trigger the type_generic pattern
+  GenericTerms:
+    - object
+    - instance
+    - value
+    - data
+    - item
+    - element
+  # Pattern toggles (enable/disable specific detection patterns)
+  EnabledPatterns:
+    ArticleParam: true        # "The user", "the appointment"
+    PossessiveParam: true     # "The event's appointment"
+    TypeRestatement: true     # "User object", "Appointment"
+    ParamToVerb: true         # "Payments to count"
+    IdPattern: true           # "ID of the treatment" for *_id params
+    DirectionalDate: true     # "from this date" for from/to/till
+    TypeGeneric: true         # "Payment object", "Hash data"
 
 # Warnings validators - catches YARD parser errors
 Warnings/UnknownTag:
