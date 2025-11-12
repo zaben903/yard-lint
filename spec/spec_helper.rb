@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'simplecov'
+require 'fileutils'
 
 SimpleCov.start do
   add_filter '/spec/'
   add_filter '/vendor/'
+
+  minimum_coverage 95
 end
 
 require 'yard-lint'

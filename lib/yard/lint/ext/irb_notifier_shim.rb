@@ -17,11 +17,14 @@ unless defined?(IRB::Notifier)
   # Try to load the real IRB notifier first
   # If it fails (IRB not installed), we'll provide our shim
   begin
+    # Suppress warnings during require attempt (Ruby 3.5+ warns about missing default gems)
+    original_verbose = $VERBOSE
+    $VERBOSE = nil
     require 'irb/notifier'
   rescue LoadError
     # IRB not available, use our shim
-    # Mark as loaded to prevent further attempts
-    $LOADED_FEATURES << 'irb/notifier.rb' unless $LOADED_FEATURES.include?('irb/notifier.rb')
+    # Mark as loaded to prevent further require attempts
+    $LOADED_FEATURES << 'irb/notifier.rb'
 
     module IRB
       # Minimal Notifier implementation that does nothing
@@ -44,7 +47,7 @@ unless defined?(IRB::Notifier)
           attr_accessor :level
 
           def initialize
-            @level = D_NOMSG
+            @level = Notifier::D_NOMSG
           end
 
           # Returns a no-op notifier for any sub-level
@@ -85,5 +88,8 @@ unless defined?(IRB::Notifier)
         end
       end
     end
+  ensure
+    # Restore original verbosity setting
+    $VERBOSE = original_verbose
   end
 end
