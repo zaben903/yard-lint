@@ -95,17 +95,17 @@ Lint only files that changed - perfect for large projects, CI/CD, and pre-commit
 
 ```bash
 # Lint only files changed since main branch (auto-detects main/master)
-yard-lint --diff lib/
+yard-lint lib/ --diff
 
 # Lint only files changed since specific branch/commit
-yard-lint --diff develop lib/
-yard-lint --diff HEAD~3 lib/
+yard-lint lib/ --diff develop
+yard-lint lib/ --diff HEAD~3
 
 # Lint only staged files (perfect for pre-commit hooks)
-yard-lint --staged lib/
+yard-lint lib/ --staged
 
 # Lint only uncommitted files
-yard-lint --changed lib/
+yard-lint lib/ --changed
 ```
 
 **Use Cases:**
@@ -114,7 +114,7 @@ yard-lint --changed lib/
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
-bundle exec yard-lint --staged --fail-on-severity error lib/
+bundle exec yard-lint lib/ --staged --fail-on-severity error
 ```
 
 **GitHub Actions CI/CD:**
@@ -129,13 +129,13 @@ jobs:
         with:
           fetch-depth: 0  # Need full history for --diff
       - name: Run YARD-Lint on changed files
-        run: bundle exec yard-lint --diff origin/${{ github.base_ref }} lib/
+        run: bundle exec yard-lint lib/ --diff origin/${{ github.base_ref }}
 ```
 
 **Legacy Codebase Incremental Adoption:**
 ```bash
 # Only enforce rules on NEW code
-yard-lint --diff main lib/
+yard-lint lib/ --diff main
 ```
 
 ### Documentation Coverage Statistics
@@ -184,10 +184,10 @@ jobs:
       - name: Check documentation coverage for new code
         run: |
           bundle exec yard-lint \
+            lib/ \
             --diff origin/${{ github.base_ref }} \
             --min-coverage 90 \
-            --quiet \
-            lib/
+            --quiet
 ```
 
 **Key Features:**
