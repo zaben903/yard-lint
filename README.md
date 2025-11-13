@@ -9,7 +9,7 @@ A comprehensive linter for YARD documentation that helps you maintain clean, con
 
 ## Why Documentation Quality Matters More Than Ever
 
-Accurate documentation isn't just for human developers anymore. [Research shows](https://arxiv.org/html/2404.03114) that incorrect documentation reduces AI assistant success rates up to 50% (from 44.7% to 22.1%). [Enterprise studies](https://arxiv.org/html/2501.13282v1) with 400+ developers found well-documented code achieves 30%+ AI acceptance rates versus 14-20% for poorly documented code.
+Accurate documentation isn't just for human developers anymore. [Research shows](https://arxiv.org/html/2404.03114) that incorrect documentation reduces AI assistant success rates up to 50% (from 44.7% to 22.1%).
 
 **The problem:** Documentation drifts as code changes-parameters get renamed, return types change, but docs stay stale. This doesn't just confuse developers; it trains AI coding assistants to generate confidently wrong code.
 
