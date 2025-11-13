@@ -22,6 +22,7 @@
   - Updated all integration test files to use `test_config` instead of `Yard::Lint::Config.new`
   - Prevents test fixtures in `spec/fixtures/` from being filtered out by `spec/**/*` exclusion pattern
   - Ensures integration tests can properly validate linter behavior on fixture files
+- **[Fix]** Remove not needed `bin/` files.
 
 ## 1.2.2 (2025-11-13)
 - **[Fix]** Fix `--version` flag failing with `uninitialized constant Yard::Lint::VERSION` error
