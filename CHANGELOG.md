@@ -1,6 +1,6 @@
 # YARD-Lint Changelog
 
-## 1.3.0 (2025-11-17)
+## 1.3.0 (2025-11-19)
 - **[Feature]** Add "did you mean" suggestions for UnknownParameterName validator
   - Suggests correct parameter names when documentation mismatches are detected
   - Uses Ruby's `did_you_mean` gem as primary suggestion engine
@@ -11,6 +11,19 @@
   - Only suggests when parameter names are similar enough (distance threshold)
   - Comprehensive test coverage with 19 unit tests and 12 integration tests
   - Inspired by yard-junk's helpful error messages
+- **[Feature]** Add "did you mean" suggestions for UnknownTag validator
+  - Suggests correct YARD tag names when typos are detected
+  - Dynamically loads valid tags and directives from YARD::Tags::Library for automatic compatibility with any YARD version
+  - Checks against all 22 standard YARD meta-data tags and 8 directives (in YARD 0.9.x)
+  - Uses Ruby's `did_you_mean` gem as primary suggestion engine
+  - Falls back to Levenshtein distance algorithm when DidYouMean doesn't find matches
+  - Example: `@returns [String]` → suggests "did you mean '@return'?"
+  - Example: `@raises [Error]` → suggests "did you mean '@raise'?"
+  - Example: `@params value` → suggests "did you mean '@param'?"
+  - Only suggests when tag names are similar enough (within 50% edit distance)
+  - Comprehensive test coverage with 35 unit tests and 12 integration tests covering common typos
+  - Completes the "did you mean" feature set alongside UnknownParameterName validator
+  - Inspired by yard-junk's helpful suggestion system
 - **[Fix]** Fix Runner bug where offense messages were lost during per-validator exclusion filtering
   - `filter_result_offenses` was creating new Result objects with stripped offense data
   - Enhanced messages (like "did you mean" suggestions) were being discarded
