@@ -9,94 +9,81 @@ module Yard
           # By invalid we mean, that they are not classes nor any of the allowed defaults or
           # exclusions.
           class Validator < Base
+            # Enable in-process execution with all visibility
+            in_process visibility: :all
+
             # All non-class yard types that are considered valid
             ALLOWED_DEFAULTS = %w[
               false
               true
               nil
               self
-              vold
+              void
             ].freeze
 
             private_constant :ALLOWED_DEFAULTS
 
+            # Execute query for a single object during in-process execution.
+            # Checks for invalid type definitions in tags.
+            # @param object [YARD::CodeObjects::Base] the code object to query
+            # @param collector [Executor::ResultCollector] collector for output
+            # @return [void]
+            def in_process_query(object, collector)
+              checked_tags = config_or_default('ValidatedTags')
+              extra_types = config_or_default('ExtraTypes')
+              allowed_types = ALLOWED_DEFAULTS + extra_types
+
+              # Sanitize type string (remove type syntax characters)
+              sanitize = ->(type) { type.tr('=><>,{} ', '') }
+
+              # Check for invalid types
+              invalid_types = object.docstring.tags
+                                    .select { |tag| checked_tags.include?(tag.tag_name) }
+                                    .flat_map(&:types)
+                                    .compact
+                                    .uniq
+                                    .map(&sanitize)
+                                    .reject { |type| allowed_types.include?(type) }
+                                    .reject { |type| type_defined?(type) }
+                                    .reject { |type| type.include?('#') }
+
+              return if invalid_types.empty?
+
+              collector.puts "#{object.file}:#{object.line}: #{object.title}"
+            end
+
             private
 
-            # Runs yard list query with proper settings on a given dir and files
-            # @param dir [String] dir where the yard db is (or where it should be generated)
-            # @param file_list_path [String] path to temp file containing file paths (one per line)
-            # @return [Hash] shell command execution hash results
-            def yard_cmd(dir, file_list_path)
-              # Write query to a temporary file to avoid shell escaping issues
-              squery = Shellwords.escape(query)
-              cmd = "cat #{Shellwords.escape(file_list_path)} | xargs yard list --query #{squery} "
+            # Check if a type is defined in Ruby runtime or YARD registry
+            # In in-process mode, parsed classes are in YARD registry but not loaded into Ruby
+            # @param type [String] type name to check
+            # @return [Boolean] true if type is defined (or at least recognized as a valid type)
+            def type_defined?(type)
+              # Symbol types like :foo are valid YARD documentation notations
+              # They document that a method accepts specific symbol values
+              return true if type.start_with?(':')
 
-              Tempfile.create(['yard_query', '.sh']) do |f|
-                f.write("#!/bin/sh\n")
-                f.write(cmd)
-                f.write("--private --protected -b #{Shellwords.escape(dir)}\n")
-                f.flush
-                f.chmod(0o755)
-
-                shell("sh #{Shellwords.escape(f.path)}")
+              # Check Ruby runtime first
+              # The shell query uses: !(Kernel.const_defined?(type) rescue nil).nil?
+              # This means: if const_defined? returns ANY value (true or false, not nil),
+              # the type is considered "recognized" and should not be flagged as invalid.
+              # This allows common types like "Boolean" which aren't actual Ruby classes
+              # but are still recognized by Ruby as valid constant names to check.
+              begin
+                const_result = Kernel.const_defined?(type)
+              rescue NameError
+                # Invalid constant name syntax (e.g., "foo<bar>" or names with special chars)
+                # These aren't valid Ruby constants, so we can't check them this way
+                const_result = nil
               end
-            end
+              return true unless const_result.nil?
 
-            # @return [String] multiline yard query that we use to find methods with
-            #   tags with invalid types definitions
-            def query
-              <<-QUERY
-                '
-                  sanitize = ->(type) do
-                    type
-                      .tr('=>', '')
-                      .tr('<', '')
-                      .tr('>', '')
-                      .tr(' ', '')
-                      .tr(',', '')
-                      .tr('{', '')
-                      .tr('}', '')
-                  end
-
-                  docstring
-                    .tags
-                    .select { |tag| #{checked_tags_names}.include?(tag.tag_name) }
-                    .map(&:types)
-                    .flatten
-                    .uniq
-                    .compact
-                    .map(&sanitize)
-                    .reject { |type| #{allowed_types_code}.include?(type) }
-                    .reject { |type| !(Kernel.const_defined?(type) rescue nil).nil? }
-                    .reject { |type| type.include?('#') }
-                    .then { |types| !types.empty? }
-                '
-              QUERY
-            end
-
-            # @return [String] tags names for which we want to check the invalid tags
-            #   types definitions
-            def checked_tags_names
-              validated_tags = config_or_default('ValidatedTags')
-              query_array(validated_tags)
-            end
-
-            # @return [String] extra names that we allow for types definitions in a yard
-            #   query acceptable form
-            def allowed_types_code
-              extra_types = config_or_default('ExtraTypes')
-              query_array(ALLOWED_DEFAULTS + extra_types)
-            end
-
-            # @param elements [Array<String>] array of elements that we want to convert into
-            #   a string ruby yard query array form
-            # @return [String] array of elements for yard query converted into a string
-            def query_array(elements)
-              "
-                [
-                    #{elements.map { |type| "'#{type}'" }.join(',')}
-                ]
-              "
+              # Check YARD registry (for classes defined in parsed files)
+              # This may fail for malformed type strings or registry issues
+              !YARD::Registry.resolve(nil, type).nil?
+            rescue NameError
+              # Type couldn't be resolved - it's not defined
+              false
             end
           end
         end
