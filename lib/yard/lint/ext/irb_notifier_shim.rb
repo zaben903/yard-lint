@@ -1,16 +1,29 @@
 # frozen_string_literal: true
 
-# Shim for IRB::Notifier to avoid IRB dependency in Ruby 3.5+
+# Shim for IRB::Notifier to avoid IRB dependency in Ruby 3.5+/4.0+
 #
-# YARD's legacy parser vendors old IRB code that depends on IRB::Notifier.
+# WHY THIS SHIM IS NEEDED:
 # In Ruby 3.5+, IRB is no longer part of the default gems and must be explicitly installed.
-# This shim provides just enough functionality to keep YARD's legacy parser working
-# without requiring the full IRB gem as a dependency.
+# YARD's codebase has a dependency chain that triggers `require "irb/notifier"` even when
+# using the modern Ripper-based parser:
 #
-# The notifier is only used for debug output in YARD's legacy parser, which we don't need.
+#   @!attribute directive parsing
+#     → YARD::Tags::OverloadTag#parse_signature
+#       → YARD::Parser::Ruby::Legacy::TokenList
+#         → ruby_lex.rb
+#           → irb/slex.rb
+#             → require "irb/notifier"  ← FAILS without IRB gem or this shim
+#
+# This happens because YARD uses its legacy TokenList for parsing attribute signatures,
+# regardless of which main parser is selected. Until YARD removes this dependency,
+# this shim is required for Ruby 3.5+/4.0+ compatibility.
+#
+# WHAT THIS SHIM DOES:
+# Provides a minimal no-op implementation of IRB::Notifier that satisfies YARD's
+# requirements. The notifier is only used for debug output which we don't need.
 #
 # IMPORTANT: This shim only loads if IRB::Notifier is not already defined.
-# If IRB gem is present, we use the real implementation instead.
+# If the IRB gem is present, we use the real implementation instead.
 
 # Only load the shim if IRB::Notifier is not already defined
 unless defined?(IRB::Notifier)

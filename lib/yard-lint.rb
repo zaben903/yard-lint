@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Load IRB notifier shim before YARD to avoid IRB dependency in Ruby 3.5+
+# Load IRB notifier shim before YARD to avoid IRB dependency in Ruby 3.5+/4.0+
 # This must be loaded before any YARD code is required
 require_relative 'yard/lint/ext/irb_notifier_shim'
 
