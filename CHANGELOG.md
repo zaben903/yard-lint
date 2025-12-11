@@ -1,6 +1,6 @@
 # YARD-Lint Changelog
 
-## 1.4.0 (2025-12-10)
+## 1.4.0 (Unreleased)
 - **[Feature]** Add `Tags/ForbiddenTags` validator to detect forbidden tag and type combinations (#59)
   - Allows projects to disallow specific tag patterns like `@return [void]`
   - Supports tag-only patterns (forbid entire tag) and tag+type patterns
