@@ -24,7 +24,7 @@ jobs:
           - '3.2'
           - '3.3'
           - '3.4'
-          - '4.0.0-preview2'
+          - '4.0'
         exclude:
           # Only test Ruby 3.4 on macOS to limit CI usage
           - os: macos-latest
@@ -32,7 +32,7 @@ jobs:
           - os: macos-latest
             ruby: '3.3'
           - os: macos-latest
-            ruby: '4.0.0-preview2'
+            ruby: '4.0'
 
     runs-on: ${{ matrix.os }}
 
@@ -64,7 +64,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@8aeb6ff8030dd539317f8e1769a044873b56ea71 # v1.268.0
         with:
-          ruby-version: '3.4'
+          ruby-version: '4.0'
           bundler-cache: true
 
       - name: Run YARD Lint (dogfooding)
